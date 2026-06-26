@@ -9,7 +9,7 @@ import org.example.Presentation.ConsoleApp
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     System.setOut(java.io.PrintStream(System.out, true, "UTF-8"))
-    val repository = InMemoryTaskRepository()
+    val repository = FileTaskRepository(java.io.File("tasks.json"))
     val service = TaskService(repository)
     val app = ConsoleApp(service)
     app.run()
