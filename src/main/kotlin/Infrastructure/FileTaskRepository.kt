@@ -6,6 +6,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import org.example.Application.TaskService
 import org.example.Application.TaskNotFoundException
+import org.example.Domain.Priority
+import org.example.Domain.Status
 import java.io.File
 
 class FileTaskRepository(private val file: File) : TaskRepository {
@@ -51,6 +53,7 @@ class FileTaskRepository(private val file: File) : TaskRepository {
     }
 
 
+
     override fun update(task: Task) {
 
         val tasks = loadAll().toMutableList()
@@ -82,6 +85,20 @@ class FileTaskRepository(private val file: File) : TaskRepository {
     override fun nextId(): Int {
         val tasks = loadAll()
         return if (tasks.isEmpty()) 1 else tasks.maxOf { it.id } + 1
+    }
+
+
+    override fun getByStatus(status: Status): List<Task> {
+        val tasks = loadAll()
+        val filterTasks = tasks.filter { it.status == status }
+        return filterTasks.map { it.toTask() }
+
+    }
+
+    override fun getSortedByPriority(): List<Task> {
+        val tasks = loadAll()
+        val filterTasks = tasks.sortedByDescending  { it.priority}
+        return filterTasks.map { it.toTask() }
     }
 
 }

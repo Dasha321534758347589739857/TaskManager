@@ -1,5 +1,6 @@
 package org.example.Application
 
+import org.example.Domain.Priority
 import org.example.Domain.Status
 import org.example.Domain.Task
 
@@ -21,6 +22,10 @@ class TaskService(private val repository: TaskRepository) {
 
     fun getAll(): List<Task> = repository.getAll()
 
+    fun getSortedByPriority(): List<Task> = repository.getSortedByPriority()
+
+    fun getByStatus(status:Status): List<Task> = repository.getByStatus(status)
+
     fun markDone(id: Int): Task {
         val task = getById(id)
         //task.markDone()
@@ -39,4 +44,15 @@ class TaskService(private val repository: TaskRepository) {
         getById(id)
         repository.delete(id)
     }
+
+    fun update(id: Int, newTitle: String, newDescription: String, newPriority: Priority): Task {
+
+        val task = getById(id)
+        val updateTask = task.update(newTitle, newDescription, newPriority)
+        repository.update(task)
+        return task
+    }
+
+
+
 }

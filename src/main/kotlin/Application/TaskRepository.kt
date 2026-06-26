@@ -1,5 +1,6 @@
 package org.example.Application
 
+import org.example.Domain.Status
 import org.example.Domain.Task
 
 /**
@@ -77,4 +78,26 @@ interface TaskRepository {
      */
 
     fun nextId(): Int
+
+    /**
+     * Функция [getByStatus] сортирует задачи по статусу.
+     *
+     * Функция должна сортировать пользователю при запросе на весь список,
+     * сортировку по статусу выполнения задачи.
+     *
+     * @see Infrastructure.InMemoryTaskRepository
+     */
+
+    fun getByStatus(status: Status) : List<Task>
+
+    /**
+     * Функция [getSortedByPriority] сортирует задачи по приоритетности.
+     *
+     * Функция должна сортировать пользователю при запросе на весь список,
+     * сортировку по приоритету выполнения задачи.
+     *
+     * @see Infrastructure.InMemoryTaskRepository
+     */
+
+    fun getSortedByPriority(): List<Task>
 }

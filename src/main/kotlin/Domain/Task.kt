@@ -28,6 +28,20 @@ public class Task ( //класс задачи
         _title = newTitle
     }
 
+    fun update(newTitle: String, newDescription: String, newPriority: Priority)
+    {
+        require(newTitle.isNotBlank()){"Заголовок не может быть пустым"}
+        require(newDescription.isNotBlank()){"Описание не может быть пустым"}
+
+        _title = newTitle
+        _description = newDescription
+        _priority = newPriority
+
+
+    }
+
+    //TODO сделать маркдан
+
     companion object {
 
 

@@ -1,6 +1,7 @@
 package org.example.Infrastructure
 
 import org.example.Application.TaskRepository
+import org.example.Domain.Status
 import org.example.Domain.Task
 
 class InMemoryTaskRepository : TaskRepository {
@@ -26,4 +27,10 @@ class InMemoryTaskRepository : TaskRepository {
     }
 
     override fun nextId(): Int = ++lastId
+
+    override fun getByStatus(status: Status): List<Task> =
+        getAll().filter { it.status == status }
+
+    override fun getSortedByPriority(): List<Task> =
+        getAll().sortedByDescending { it.priority }
 }

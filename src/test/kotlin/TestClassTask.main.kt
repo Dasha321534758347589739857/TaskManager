@@ -30,8 +30,10 @@ class TaskTest {
     @Test
     fun `markDone changes status to DONE`() {
         val task = Task.create(id = 1, title = "Тест")
-        task.markDone()
+            //task.markDone()
         assertEquals(Status.END, task.status)
     }
 
 }
+
+//TODO тесты сделать по уроку
