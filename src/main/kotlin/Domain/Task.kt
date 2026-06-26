@@ -1,28 +1,35 @@
 package org.example.Domain
 
-enum class Priority { LOW, MEDIUM, HIGH }
+import org.example.Domain.MAX_TITLE_LENGTH
+import org.example.Domain.Priority
+import org.example.Domain.Status
 
-enum class Status { START, PROCESS, END }
-
-
-class Task ( //класс задачи
+public class Task ( //класс задачи
     val id: Int,
-    var title: String,
-    var description: String,
-    var priority: Priority,
-    var status: Status,)
+    private var _title: String,
+    private var _description: String,
+    private var _priority: Priority,
+    private var _status: Status)
+
 {
-    fun taskEnd() { // функция на завершение задачи
-        status = Status.END
+    val title: String get()= _title
+    val description: String get() = _description
+    val priority: Priority get() = _priority
+    val status: Status get() = _status
+
+
+
+    fun complete() { // функция на завершение задачи
+        _status = Status.END
     }
 
-    fun rename(newTitle: String) { // функция на название задачи
-        require(newTitle.isNotBlank()) { "Заголовок не может быть пустым" } //валидация строки на пустое значение
-        title = newTitle
+    fun rename(newTitle: String) {
+        require(newTitle.isNotBlank()) { "Заголовок не может быть пустым" }
+        _title = newTitle
     }
 
-    companion object { // создание статичного единичного объекта, привязанного к классу
-        const val MAX_TITLE_LENGTH = 100 //Это точно надо?
+    companion object {
+
 
         fun create(
             id: Int,

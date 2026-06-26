@@ -5,6 +5,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
+import org.example.Domain.Task
+
 class TaskTest {
 
     @Test
@@ -31,4 +33,5 @@ class TaskTest {
         task.markDone()
         assertEquals(Status.END, task.status)
     }
+
 }

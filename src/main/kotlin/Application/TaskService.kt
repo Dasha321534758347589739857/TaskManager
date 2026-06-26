@@ -36,7 +36,6 @@ class TaskService(private val repository: TaskRepository) {
     }
 
     fun delete(id: Int) {
-        // проверяем, что задача существует — иначе осмысленная ошибка
         getById(id)
         repository.delete(id)
     }
