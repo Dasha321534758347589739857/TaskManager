@@ -73,7 +73,7 @@ class FileTaskRepository(private val file: File) : TaskRepository {
         val tasks = loadAll().toMutableList()
         val removed = tasks.removeIf { it.id == id }
 
-        if (removed) {  // Если удалили хотя бы одну задачу
+        if (removed) {
             saveAll(tasks)
         } else {
             throw TaskNotFoundException(id)
@@ -100,5 +100,7 @@ class FileTaskRepository(private val file: File) : TaskRepository {
         val filterTasks = tasks.sortedByDescending  { it.priority}
         return filterTasks.map { it.toTask() }
     }
+
+
 
 }

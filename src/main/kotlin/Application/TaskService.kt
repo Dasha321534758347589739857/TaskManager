@@ -28,7 +28,7 @@ class TaskService(private val repository: TaskRepository) {
 
     fun markDone(id: Int): Task {
         val task = getById(id)
-        //task.markDone()
+        task.complete()
         repository.update(task)
         return task
     }

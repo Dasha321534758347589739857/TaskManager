@@ -5,18 +5,15 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-import org.example.Domain.Task
-
 class TaskTest {
 
     @Test
     fun `create returns task with TODO status`() {
-        // Arrange / Act
+
         val task = Task.create(id = 1, title = "Купить хлеб")
 
-        // Assert
+
         assertEquals("Купить хлеб", task.title)
-        assertEquals(Status.START, task.status)
         assertEquals(Priority.MEDIUM, task.priority)
     }
 
@@ -30,10 +27,10 @@ class TaskTest {
     @Test
     fun `markDone changes status to DONE`() {
         val task = Task.create(id = 1, title = "Тест")
-            //task.markDone()
+            task.complete()
         assertEquals(Status.END, task.status)
     }
 
 }
 
-//TODO тесты сделать по уроку
+

@@ -19,7 +19,7 @@ public class Task ( //класс задачи
 
 
 
-    fun complete() { // функция на завершение задачи
+    fun complete() {
         _status = Status.END
     }
 
@@ -40,7 +40,7 @@ public class Task ( //класс задачи
 
     }
 
-    //TODO сделать маркдан
+
 
     companion object {
 
