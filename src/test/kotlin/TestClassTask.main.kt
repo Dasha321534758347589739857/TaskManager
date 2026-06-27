@@ -1,4 +1,3 @@
-#!/usr/bin/env kotlin
 package org.example.Domain
 
 import kotlin.test.Test
@@ -28,7 +27,7 @@ class TaskTest2 {
     @Test
     fun `markDone changes status to DONE`() {
         val task = Task.create(id = 1, title = "Тест")
-      //  task.taskEnd()
+        task.complete()
         assertEquals(Status.END, task.status)
     }
 }

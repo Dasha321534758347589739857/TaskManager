@@ -1,4 +1,3 @@
-#!/usr/bin/env kotlin
 package org.example.Domain
 
 import kotlin.test.Test
