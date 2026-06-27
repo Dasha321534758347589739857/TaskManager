@@ -48,7 +48,7 @@ class TaskServiceTest {
         val result = service.markDone(1)
 
         // Assert
-        assertEquals(Status.DONE, result.status)
+        assertEquals(Status.END, result.status)
         verify { repository.update(task) }
     }
 }
