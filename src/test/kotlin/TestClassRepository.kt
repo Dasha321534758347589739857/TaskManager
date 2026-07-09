@@ -1,12 +1,8 @@
-package org.example.Infrastructure
-
-
 import org.example.Application.TaskRepository
-import org.example.Domain.Priority
 import org.example.Domain.Task
+import org.example.Infrastructure.InMemoryTaskRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
@@ -42,7 +38,7 @@ class TestClassRepository{
         repository.add(task)
 
 
-        val found = repository.getById(1)
+        val found = repository.getById(3)
 
 
         assertNotNull(found)
@@ -72,5 +68,5 @@ class TestClassRepository{
         val found = repository.getById(1)
         assertNull(found)
     }
-//TODO разобраться с update
+
 }

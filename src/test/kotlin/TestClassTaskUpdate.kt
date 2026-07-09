@@ -1,5 +1,6 @@
-package org.example.Domain
-
+import org.example.Domain.Priority
+import org.example.Domain.Status
+import org.example.Domain.Task
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -20,9 +21,9 @@ class TaskTestUpdate {
     @Test
     fun `update returns task`() {
         val task = Task.create(id = 7, title = "Тест")
-        task.update("Сходить в аптеку","", Priority.LOW)
+        task.update("Сходить в аптеку","G", Priority.LOW)
         assertEquals("Сходить в аптеку", task.title)
-        assertEquals("", task.description)
+        assertEquals("G", task.description)
         assertEquals(Priority.LOW, task.priority)
     }
 

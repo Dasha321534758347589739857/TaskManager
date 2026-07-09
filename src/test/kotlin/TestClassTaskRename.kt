@@ -1,8 +1,8 @@
-package org.example.Domain
-
+import org.example.Domain.Priority
+import org.example.Domain.Status
+import org.example.Domain.Task
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class TaskTestRename {
 

@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.3.21"
-    kotlin("plugin.serialization") version "2.3.21"
+    kotlin("jvm") version "2.1.10"
+    kotlin("plugin.serialization") version "2.1.10"
 }
 
 group = "org.example"
@@ -10,16 +10,25 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    testImplementation(kotlin("test"))
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("io.mockk:mockk:1.13.13")
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(23)
+}
+
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "23"
+    targetCompatibility = "23"
 }
 
 tasks.test {
     useJUnitPlatform()
+
 }

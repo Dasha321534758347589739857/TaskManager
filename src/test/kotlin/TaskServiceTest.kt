@@ -51,4 +51,34 @@ class TaskServiceTest {
         assertEquals(Status.END, result.status)
         verify { repository.update(task) }
     }
+
+    @Test
+    fun `rename updates task `() {
+        // Arrange
+        val task = Task.create(id = 1, title = "Старый заголовок")
+        every { repository.getById(1) } returns task
+        val newTitle = "Новый заголовок"
+
+        // Act
+        val result = service.rename(1, newTitle)
+
+        // Assert
+        assertEquals(newTitle, result.title)
+        verify { repository.update(task) }
+    }
+
+
+    @Test
+    fun `delete removes task from repository`() {
+        // Arrange
+        val task = Task.create(id = 1, title = "Задача")
+        every { repository.getById(1) } returns task
+
+        // Act
+        service.delete(1)
+
+        // Assert
+        verify { repository.delete(1) }
+    }
+
 }

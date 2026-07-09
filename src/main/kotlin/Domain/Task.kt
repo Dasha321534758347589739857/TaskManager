@@ -23,6 +23,7 @@ public class Task ( //класс задачи
         _status = Status.END
     }
 
+
     fun rename(newTitle: String) {
         require(newTitle.isNotBlank()) { "Заголовок не может быть пустым" }
         _title = newTitle
