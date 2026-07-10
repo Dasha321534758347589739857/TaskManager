@@ -5,10 +5,10 @@ build/
 !**/src/test/**/build/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+# Игнорируем всю папку .idea — в ней машинно-зависимые настройки
+# (имена JDK, путь к Gradle JVM и т.п.), из-за которых проект ломается
+# на другом компьютере ("Unable to load class ...").
+.idea/
 *.iws
 *.iml
 *.ipr
