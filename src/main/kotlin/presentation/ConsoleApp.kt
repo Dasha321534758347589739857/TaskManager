@@ -90,10 +90,10 @@ class ConsoleApp(private val service: TaskService) {
 
         print("Введите заголовок: ")
         val newTitle = readLine()?.trim().orEmpty()
-        print("Введите заголовок: ")
+        print("Введите описание: ")
         val newDescription = readLine()?.trim().orEmpty()
 
-        while (true) {
+
             println(
                 """
             | Введите приоритет
@@ -110,11 +110,13 @@ class ConsoleApp(private val service: TaskService) {
 
                 "0" -> {
                     println("Отмена")
-                    return
+
                 }
                 else -> println("Неизвестная команда, попробуте ещё раз.")
             }
-        }
+
+
+
 
 
 
