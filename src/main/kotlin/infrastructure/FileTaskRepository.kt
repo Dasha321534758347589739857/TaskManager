@@ -1,13 +1,13 @@
-package org.example.Infrastructure
+package org.example.infrastructure
 
-import org.example.Application.TaskRepository
-import org.example.Domain.Task
+import org.example.application.TaskRepository
+import org.example.domain.Task
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
-import org.example.Application.TaskService
-import org.example.Application.TaskNotFoundException
-import org.example.Domain.Priority
-import org.example.Domain.Status
+import org.example.application.TaskService
+import org.example.application.EntityNotFoundException
+import org.example.domain.Priority
+import org.example.domain.Status
 import java.io.File
 
 class FileTaskRepository(private val file: File) : TaskRepository {
@@ -63,7 +63,7 @@ class FileTaskRepository(private val file: File) : TaskRepository {
             tasks[index] = TaskDto.fromTask(task)
             saveAll(tasks)
         } else {
-            throw TaskNotFoundException(index)
+            throw EntityNotFoundException(index)
         }
     }
 
@@ -76,7 +76,7 @@ class FileTaskRepository(private val file: File) : TaskRepository {
         if (removed) {
             saveAll(tasks)
         } else {
-            throw TaskNotFoundException(id)
+            throw EntityNotFoundException(id)
         }
     }
 

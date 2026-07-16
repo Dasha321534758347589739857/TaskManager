@@ -1,9 +1,9 @@
-package org.example.Infrastructure
+package org.example.infrastructure
 
-import org.example.Domain.Priority
-import org.example.Domain.Status
+import org.example.domain.Priority
+import org.example.domain.Status
 import kotlinx.serialization.Serializable
-import org.example.Domain.Task
+import org.example.domain.Task
 
 @Serializable
 data class TaskDto(

@@ -1,8 +1,8 @@
-package org.example.Domain
+package org.example.domain
 
-import org.example.Domain.MAX_TITLE_LENGTH
-import org.example.Domain.Priority
-import org.example.Domain.Status
+import org.example.domain.MAX_TITLE_LENGTH
+import org.example.domain.Priority
+import org.example.domain.Status
 
 public class Task ( //класс задачи
     val id: Int,

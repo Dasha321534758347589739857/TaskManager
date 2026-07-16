@@ -1,13 +1,13 @@
-import org.example.Application.TaskRepository
-import org.example.Domain.Task
-import org.example.Infrastructure.InMemoryTaskRepository
+import org.example.application.TaskRepository
+import org.example.domain.Task
+import org.example.infrastructure.InMemoryTaskRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
 
-class TestClassRepository{
+class ClassRepositoryTest{
 
     private lateinit var repository: TaskRepository
 
