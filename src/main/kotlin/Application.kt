@@ -9,10 +9,17 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.example.application.TaskService
+import org.example.infrastructure.FileTaskRepository
+import org.example.server.taskRoutes
 
 fun main() {
+
+    val repository = FileTaskRepository(java.io.File("tasks.json"))
+    val taskService = TaskService(repository)
+
     embeddedServer(Netty, port = 8081, host = "0.0.0.0") {
-        module()
+        module(taskService)
     }.start(wait = true)
 }
 
@@ -24,7 +31,7 @@ data class HealthResponse(
     val service: String
 )
 
-fun Application.module() {
+fun Application.module(taskService: TaskService) {
     install(ContentNegotiation) {
         json(Json {
             prettyPrint = true
@@ -42,5 +49,7 @@ fun Application.module() {
             )
             call.respond(response)
         }
+        taskRoutes(taskService)
+
     }
 }
