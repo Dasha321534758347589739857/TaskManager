@@ -9,6 +9,7 @@ import org.example.domain.Task
 
 @Serializable
 data class TaskResponse(
+    val id: Int,
     val title: String,
     val description: String,
     val priority: Priority,
@@ -18,6 +19,7 @@ data class TaskResponse(
     companion object {
         fun fromDomain(task: Task): TaskResponse {
             return TaskResponse(
+                id = task.id,
                 title = task.title,
                 description = task.description,
                 priority = task.priority,
@@ -26,6 +28,28 @@ data class TaskResponse(
         }
     }
 }
+
+@Serializable
+data class CreateTaskRequest(
+    val title: String
+)
+
+@Serializable
+data class UpdateTaskRequest(
+    val id: Int,
+    val title: String? = null,
+    val description: String? = null,
+    val priority: Priority,
+    val status: Status
+
+)
+
+@Serializable
+data class DeleteResponse(
+    val status: String,
+    val id: Int,
+    val message: String = "Записка удалена"
+)
 
 @Serializable
 data class ErrorResponse(
