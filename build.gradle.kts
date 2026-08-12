@@ -28,15 +28,34 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.18")
 
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+
+    implementation("io.ktor:ktor-server-status-pages:3.1.1")
+
 }
+
 
 kotlin {
     jvmToolchain(23)
 }
 
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+tasks.withType<Test> {
+    systemProperty("file.encoding", "UTF-8")
+}
+
+tasks.withType<JavaExec> {
+    systemProperty("file.encoding", "UTF-8")
+}
+
+
+
 tasks.test {
     useJUnitPlatform()
 }
+
+
 
 // Задача для запуска HTTP сервера
 tasks.register<JavaExec>("runServer") {
@@ -45,6 +64,7 @@ tasks.register<JavaExec>("runServer") {
     mainClass.set("org.example.ApplicationKt")
     classpath = sourceSets.main.get().runtimeClasspath
     standardInput = System.`in`
+    systemProperty("file.encoding", "UTF-8")
 }
 
 // Задача для запуска CLI
