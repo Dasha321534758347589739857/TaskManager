@@ -3,13 +3,17 @@ package org.example.domain
 import org.example.domain.MAX_TITLE_LENGTH
 import org.example.domain.Priority
 import org.example.domain.Status
+import java.time.LocalDateTime
 
 public data class Task ( //класс задачи
     val id: Int,
     private var _title: String,
     private var _description: String,
     private var _priority: Priority,
-    private var _status: Status)
+    private var _status: Status,
+    val isDone: Boolean = false,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val updatedAt: LocalDateTime = LocalDateTime.now())
 
 {
     val title: String get()= _title
@@ -29,16 +33,23 @@ public data class Task ( //класс задачи
         _title = newTitle
     }
 
-    fun update(newTitle: String, newDescription: String, newPriority: Priority)
-    {
-        require(newTitle.isNotBlank()){"Заголовок не может быть пустым"}
-        require(newDescription.isNotBlank()){"Описание не может быть пустым"}
+    fun update(
+        newTitle: String,
+        newDescription: String,
+        newPriority: Priority
+    ): Task {
+        require(newTitle.isNotBlank()) { "Заголовок не может быть пустым" }
+        require(newTitle.length <= MAX_TITLE_LENGTH) {
+            "Заголовок длиннее $MAX_TITLE_LENGTH символов"
+        }
+        require(newDescription.isNotBlank()) { "Описание не может быть пустым" }
 
-        _title = newTitle
-        _description = newDescription
-        _priority = newPriority
+        return this.copy(
+            _title = newTitle.trim(),
+            _description = newDescription.trim(),
+            _priority = newPriority,
 
-
+        )
     }
 
 

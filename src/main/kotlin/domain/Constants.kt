@@ -16,7 +16,7 @@ package org.example.domain
  *
  * @see Task
  */
-public const val MAX_TITLE_LENGTH = 100
-
+public const val MAX_TITLE_LENGTH = 150
+const val MAX_DESCRIPTION_LENGTH = 1000
 
 

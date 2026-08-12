@@ -30,6 +30,8 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 
     implementation("io.ktor:ktor-server-status-pages:3.1.1")
+    implementation("org.postgresql:postgresql:42.7.5")
+    implementation("com.zaxxer:HikariCP:5.1.0")
 
 }
 
@@ -57,7 +59,7 @@ tasks.test {
 
 
 
-// Задача для запуска HTTP сервера
+
 tasks.register<JavaExec>("runServer") {
     group = "application"
     description = "Run HTTP server"

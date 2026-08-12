@@ -28,8 +28,14 @@ fun main() {
     System.setOut(java.io.PrintStream(System.out, true, "UTF-8"))
     System.setErr(java.io.PrintStream(System.err, true, "UTF-8"))
 
+    val dbUrl = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/taskmanager"
+    val dbUser = System.getenv("DB_USER") ?: "taskuser"
+    val dbPassword = System.getenv("DB_PASSWORD") ?: "taskpass"
+    println("Подключение к PostgreSQL: $dbUrl")
+
     val repository = FileTaskRepository(java.io.File("tasks.json"))
     val taskService = TaskService(repository)
+
     val port = findAvailablePort(8081)
     println("Сервер находится на порте: $port")
 

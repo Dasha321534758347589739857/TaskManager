@@ -18,13 +18,9 @@ fun Route.taskRoutes(taskService: TaskService) {
 
     // получить все задачи
     get("/api/tasks") {
-        try {
-            val tasks = taskService.getAll()
-            val response = tasks.map { TaskResponse.fromDomain(it) }
-            call.respond(HttpStatusCode.OK, response)
-        } catch (e: Exception) {
-            throw e
-        }
+        val tasks = taskService.getAll()
+        val response = tasks.map { TaskResponse.fromDomain(it) }
+        call.respond(HttpStatusCode.OK, response)
     }
 
     // GET /api/tasks/{id} - получить задачу по ID
@@ -43,7 +39,7 @@ fun Route.taskRoutes(taskService: TaskService) {
             call.receive<CreateTaskRequest>()
 
         } catch (e: SerializationException) {
-            throw e
+            throw IllegalArgumentException("Неверный формат: ${e.message}")
         }
 
         if (request.title.isBlank()) {

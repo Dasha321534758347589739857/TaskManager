@@ -50,6 +50,9 @@ class FileTaskRepositoryTest {
         assertEquals(task.description, loadedTask.description)
         assertEquals(task.priority, loadedTask.priority)
         assertEquals(task.status, loadedTask.status)
+        assertFalse(task.isDone)
+        assertNotNull(task.createdAt)
+        assertNotNull(task.updatedAt)
         assertTrue(testFile.exists())
         assertTrue(testFile.length() > 0)
     }

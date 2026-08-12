@@ -11,7 +11,8 @@ data class TaskDto(
     val title: String,
     val description: String,
     val priority: Priority,
-    val status: Status,
+    val status: Status
+
 ){
     fun toTask(): Task = Task(
         id = id,
