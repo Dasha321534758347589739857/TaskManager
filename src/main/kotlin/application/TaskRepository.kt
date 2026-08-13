@@ -101,6 +101,29 @@ interface TaskRepository {
     fun getSortedByPriority(): List<Task>
 
 
+    /**
+     * Функция [getTasks] возвращает список задач с фильтрацией, сортировкой и пагинацией.
+     *
+     * @param status Фильтр по статусу
+     * @param sortBy Поле для сортировки
+     * @param limit Количество записей на странице (максимум 100)
+     * @param offset Смещение для пагинации
+     * @return [List<Task>] Отфильтрованный и отсортированный список задач
+     */
+    fun getTasks(
+        status: Status? = null,
+        sortBy: String? = null,
+        limit: Int = 100,
+        offset: Int = 0
+    ): List<Task>
+
+    /**
+     * Функция [getTotalCount] возвращает общее количество задач с учетом фильтра.
+     *
+     * @param status Фильтр по статусу (опционально)
+     * @return [Int] Общее количество задач
+     */
+    fun getTotalCount(status: Status? = null): Int
 
 
 }

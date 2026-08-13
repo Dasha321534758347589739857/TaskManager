@@ -17,6 +17,8 @@ class PostgresTaskRepository(
     private val password: String
 ) : TaskRepository {
 
+    private val MAX_LIMIT = 100
+
     init {
         createTableIfNotExists()
     }
@@ -226,5 +228,91 @@ class PostgresTaskRepository(
             updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime() ?: LocalDateTime.now()
         )
     }
+    override fun getTasks(
+        status: Status?,
+        sortBy: String?,
+        limit: Int,
+        offset: Int
+    ): List<Task> {
+        val actualLimit = minOf(limit, MAX_LIMIT)
+
+        val sql = buildQuery(status, sortBy, actualLimit, offset)
+        val tasks = mutableListOf<Task>()
+
+        getConnection().use { conn ->
+            conn.prepareStatement(sql).use { pstmt ->
+                var paramIndex = 1
+
+                if (status != null) {
+                    pstmt.setString(paramIndex++, status.name)
+                }
+
+                pstmt.setInt(paramIndex++, actualLimit)
+                pstmt.setInt(paramIndex, offset)
+
+                pstmt.executeQuery().use { rs ->
+                    while (rs.next()) {
+                        tasks.add(mapResultSetToTask(rs))
+                    }
+                }
+            }
+        }
+        return tasks
+    }
+
+    override fun getTotalCount(status: Status?): Int {
+        val sql = buildCountQuery(status)
+
+        getConnection().use { conn ->
+            conn.prepareStatement(sql).use { pstmt ->
+                if (status != null) {
+                    pstmt.setString(1, status.name)
+                }
+
+                pstmt.executeQuery().use { rs ->
+                    if (rs.next()) {
+                        return rs.getInt(1)
+                    }
+                }
+            }
+        }
+        return 0
+    }
+
+    private fun buildQuery(status: Status?, sortBy: String?, limit: Int, offset: Int): String {
+        val baseSql = "SELECT * FROM tasks"
+        val whereClause = if (status != null) " WHERE status = ?" else ""
+        val orderClause = buildOrderClause(sortBy)
+
+        return """
+            $baseSql
+            $whereClause
+            $orderClause
+            LIMIT ? OFFSET ?
+        """.trimIndent()
+    }
+
+    private fun buildCountQuery(status: Status?): String {
+        val baseSql = "SELECT COUNT(*) FROM tasks"
+        return if (status != null) {
+            "$baseSql WHERE status = ?"
+        } else {
+            baseSql
+        }
+    }
+
+    private fun buildOrderClause(sortBy: String?): String {
+        return when (sortBy?.lowercase()) {
+            "priority" -> "ORDER BY priority ASC, id ASC"
+            "priority_desc" -> "ORDER BY priority DESC, id ASC"
+            "created_at" -> "ORDER BY created_at ASC, id ASC"
+            "created_at_desc" -> "ORDER BY created_at DESC, id ASC"
+            "title" -> "ORDER BY title ASC, id ASC"
+            "title_desc" -> "ORDER BY title DESC, id ASC"
+            else -> "ORDER BY id ASC"
+        }
+    }
+
+
 
 }

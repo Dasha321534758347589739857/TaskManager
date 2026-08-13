@@ -53,6 +53,18 @@ class TaskService(private val repository: TaskRepository) {
         return task
     }
 
+    fun getTasks(
+        status: Status? = null,
+        sortBy: String? = null,
+        limit: Int = 20,
+        offset: Int = 0
+    ): List<Task> {
+        val actualLimit = minOf(limit, 100)
+        return repository.getTasks(status, sortBy, actualLimit, offset)
+    }
 
+    fun getTotalCount(status: Status? = null): Int {
+        return repository.getTotalCount(status)
+    }
 
 }

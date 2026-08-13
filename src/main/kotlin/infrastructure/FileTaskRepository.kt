@@ -13,12 +13,19 @@ import java.io.File
 class FileTaskRepository(private val file: File) : TaskRepository {
 
     private val json = Json { prettyPrint = true }
+    private var tasks = mutableMapOf<Int, Task>()
+    private var currentId = 1
+
+    init {
+        loadAll()
+    }
 
     private fun loadAll(): MutableList<TaskDto> {
         if (!file.exists()) return mutableListOf()
         val text = file.readText()
         if (text.isBlank()) return mutableListOf()
         return json.decodeFromString<List<TaskDto>>(text).toMutableList()
+
     }
 
     private fun saveAll(items: List<TaskDto>) {
@@ -101,6 +108,42 @@ class FileTaskRepository(private val file: File) : TaskRepository {
         return filterTasks.map { it.toTask() }
     }
 
+    override fun getTasks(
+        status: Status?,
+        sortBy: String?,
+        limit: Int,
+        offset: Int
+    ): List<Task> {
+        val actualLimit = minOf(limit, 100)
 
+        var result = tasks.values.toList()
+
+
+        if (status != null) {
+            result = result.filter { it.status == status }
+        }
+
+
+        result = when (sortBy?.lowercase()) {
+            "priority" -> result.sortedBy { it.priority }
+            "priority_desc" -> result.sortedByDescending { it.priority }
+            "created_at" -> result.sortedBy { it.createdAt }
+            "created_at_desc" -> result.sortedByDescending { it.createdAt }
+            "title" -> result.sortedBy { it.title }
+            "title_desc" -> result.sortedByDescending { it.title }
+            else -> result.sortedBy { it.id }
+        }
+
+
+        return result.drop(offset).take(actualLimit)
+    }
+
+    override fun getTotalCount(status: Status?): Int {
+        var result = tasks.values.toList()
+        if (status != null) {
+            result = result.filter { it.status == status }
+        }
+        return result.size
+    }
 
 }
