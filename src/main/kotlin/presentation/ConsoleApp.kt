@@ -1,10 +1,10 @@
-package org.example.Presentation
+package org.example.presentation
 
-import org.example.Application.CreateTaskCommand
-import org.example.Application.TaskNotFoundException
-import org.example.Application.TaskService
-import org.example.Domain.Priority
-import org.example.Domain.Status
+import org.example.application.CreateTaskCommand
+import org.example.application.EntityNotFoundException
+import org.example.application.TaskService
+import org.example.domain.Priority
+import org.example.domain.Status
 
 class ConsoleApp(private val service: TaskService) {
 
@@ -70,7 +70,7 @@ class ConsoleApp(private val service: TaskService) {
         try {
             service.markDone(id)
             println("Задача #$id отмечена выполненной.")
-        } catch (e: TaskNotFoundException) {
+        } catch (e: EntityNotFoundException) {
             println("Ошибка: ${e.message}")
         }
     }
@@ -80,7 +80,7 @@ class ConsoleApp(private val service: TaskService) {
         try {
             service.delete(id)
             println("Задача #$id удалена.")
-        } catch (e: TaskNotFoundException) {
+        } catch (e: EntityNotFoundException) {
             println("Ошибка: ${e.message}")
         }
     }
@@ -90,10 +90,10 @@ class ConsoleApp(private val service: TaskService) {
 
         print("Введите заголовок: ")
         val newTitle = readLine()?.trim().orEmpty()
-        print("Введите заголовок: ")
+        print("Введите описание: ")
         val newDescription = readLine()?.trim().orEmpty()
 
-        while (true) {
+
             println(
                 """
             | Введите приоритет
@@ -110,11 +110,13 @@ class ConsoleApp(private val service: TaskService) {
 
                 "0" -> {
                     println("Отмена")
-                    return
+
                 }
                 else -> println("Неизвестная команда, попробуте ещё раз.")
             }
-        }
+
+
+
 
 
 

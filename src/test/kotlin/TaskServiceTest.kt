@@ -1,7 +1,7 @@
-package org.example.Application
+package org.example.application
 
-import org.example.Domain.Status
-import org.example.Domain.Task
+import org.example.domain.Status
+import org.example.domain.Task
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -33,7 +33,7 @@ class TaskServiceTest {
         every { repository.getById(42) } returns null
 
         // Act + Assert
-        assertFailsWith<TaskNotFoundException> {
+        assertFailsWith<EntityNotFoundException> {
             service.getById(42)
         }
     }

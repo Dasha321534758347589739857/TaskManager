@@ -1,12 +1,11 @@
-package org.example.Application
+package org.example.application
 
-import org.example.Domain.Priority
+import org.example.domain.Priority
 
 /**
  * Команда [CreateTaskCommand] для создания навой задачи.
  *
- * Нужна для автоматической генерации id в программе без участия пользователя.
- * Пользователю же поступают те данные, которые ему необходимы для создания задачи.
+ * Описание данных для задачи.
  *
  * @property title Заголовок задачи.
  * @property description Описание задачи.

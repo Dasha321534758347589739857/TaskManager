@@ -1,8 +1,8 @@
-package org.example.Application
+package org.example.application
 
-import org.example.Domain.Priority
-import org.example.Domain.Status
-import org.example.Domain.Task
+import org.example.domain.Priority
+import org.example.domain.Status
+import org.example.domain.Task
 
 class TaskService(private val repository: TaskRepository) {
 
@@ -13,12 +13,13 @@ class TaskService(private val repository: TaskRepository) {
             description = command.description,
             priority = command.priority,
         )
+
         repository.add(task)
         return task
     }
 
     fun getById(id: Int): Task =
-        repository.getById(id) ?: throw TaskNotFoundException(id)
+        repository.getById(id) ?: throw EntityNotFoundException(id)
 
     fun getAll(): List<Task> = repository.getAll()
 
@@ -46,9 +47,8 @@ class TaskService(private val repository: TaskRepository) {
     }
 
     fun update(id: Int, newTitle: String, newDescription: String, newPriority: Priority): Task {
-
         val task = getById(id)
-        val updateTask = task.update(newTitle, newDescription, newPriority)
+        task.update(newTitle, newDescription, newPriority)
         repository.update(task)
         return task
     }

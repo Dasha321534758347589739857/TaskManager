@@ -1,8 +1,8 @@
-package org.example.Infrastructure
+package org.example.infrastructure
 
-import org.example.Application.TaskRepository
-import org.example.Domain.Status
-import org.example.Domain.Task
+import org.example.application.TaskRepository
+import org.example.domain.Status
+import org.example.domain.Task
 
 class InMemoryTaskRepository : TaskRepository {
     private val tasks = mutableMapOf<Int, Task>()

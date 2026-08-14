@@ -1,11 +1,11 @@
-package org.example.Domain
+package org.example.domain
 
 /**
  * Класс приоритетности задачи [Priority].
  *
  * Определяет важность задачи. Используется для сортировки задач.
  *
- * @see org.example.Application.CreateTaskCommand
+ * @see org.example.application.CreateTaskCommand
  * @see Task
  */
 public enum class Priority {

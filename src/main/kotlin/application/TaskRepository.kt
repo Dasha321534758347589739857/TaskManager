@@ -1,7 +1,7 @@
-package org.example.Application
+package org.example.application
 
-import org.example.Domain.Status
-import org.example.Domain.Task
+import org.example.domain.Status
+import org.example.domain.Task
 
 /**
  * Интерфейс [TaskRepository] описывает взаимодействие с данными задачи.
@@ -22,7 +22,6 @@ interface TaskRepository {
      *
      * @param task Объект задачи для добавления.
      * @see nextId
-     * @see Infrastructure.InMemoryTaskRepository
      */
 
     fun add(task: Task)
@@ -34,7 +33,7 @@ interface TaskRepository {
      *
      * @param id Объект задачи для добавления.
      * @return [Task]
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
       */
 
     fun getById(id: Int): Task?
@@ -43,7 +42,7 @@ interface TaskRepository {
      * Функция [getAll] выводит все имеющиеся задачи в репозитории.
      *
      * @return [List<Task>] Список всех задач типа [Task]
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
      */
 
     fun getAll(): List<Task>
@@ -52,7 +51,7 @@ interface TaskRepository {
      * Функция [update] обновляет конкретную задачу.
      *
      * @param task Объект класса [Task]
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
      */
 
     fun update(task: Task)
@@ -64,7 +63,7 @@ interface TaskRepository {
      * Проверка на переданный id, значение id не должно быть 'null'.
      *
      * @param id
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
      */
 
     fun delete(id: Int)
@@ -74,7 +73,7 @@ interface TaskRepository {
      *
      * Используется внутри функции [add] и [TaskService.create].
      *
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
      */
 
     fun nextId(): Int
@@ -85,7 +84,7 @@ interface TaskRepository {
      * Функция должна сортировать пользователю при запросе на весь список,
      * сортировку по статусу выполнения задачи.
      *
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
      */
 
     fun getByStatus(status: Status) : List<Task>
@@ -96,7 +95,7 @@ interface TaskRepository {
      * Функция должна сортировать пользователю при запросе на весь список,
      * сортировку по приоритету выполнения задачи.
      *
-     * @see Infrastructure.InMemoryTaskRepository
+     * @see infrastructure.InMemoryTaskRepository
      */
 
     fun getSortedByPriority(): List<Task>

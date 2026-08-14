@@ -1,4 +1,4 @@
-package org.example.Domain
+package org.example.domain
 
 /**
  * Статус задачи [Status].

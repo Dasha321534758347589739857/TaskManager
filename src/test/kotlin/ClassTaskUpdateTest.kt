@@ -1,6 +1,6 @@
-import org.example.Domain.Priority
-import org.example.Domain.Status
-import org.example.Domain.Task
+import org.example.domain.Priority
+import org.example.domain.Status
+import org.example.domain.Task
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

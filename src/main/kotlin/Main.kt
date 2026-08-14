@@ -1,9 +1,9 @@
 package org.example
 
-import org.example.Application.TaskService
-import org.example.Infrastructure.InMemoryTaskRepository
-import org.example.Presentation.ConsoleApp
-import org.example.Infrastructure.FileTaskRepository
+import org.example.application.TaskService
+import org.example.infrastructure.InMemoryTaskRepository
+import org.example.presentation.ConsoleApp
+import org.example.infrastructure.FileTaskRepository
 
 
 @OptIn(ExperimentalStdlibApi::class)
