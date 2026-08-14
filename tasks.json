@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "Помыть посуду",
+        "description": "",
+        "priority": "MEDIUM",
+        "status": "START"
+    },
+    {
+        "id": 2,
+        "title": "Постирать дом",
+        "description": "",
+        "priority": "MEDIUM",
+        "status": "START"
+    }
+]

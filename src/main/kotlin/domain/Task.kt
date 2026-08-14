@@ -4,7 +4,7 @@ import org.example.domain.MAX_TITLE_LENGTH
 import org.example.domain.Priority
 import org.example.domain.Status
 
-public class Task ( //класс задачи
+public data class Task ( //класс задачи
     val id: Int,
     private var _title: String,
     private var _description: String,

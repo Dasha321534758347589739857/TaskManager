@@ -1,7 +1,6 @@
 package org.example
 
 import org.example.application.TaskService
-import org.example.infrastructure.InMemoryTaskRepository
 import org.example.presentation.ConsoleApp
 import org.example.infrastructure.FileTaskRepository
 
