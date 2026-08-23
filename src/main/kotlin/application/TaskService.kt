@@ -13,7 +13,6 @@ class TaskService(private val repository: TaskRepository) {
             description = command.description,
             priority = command.priority,
         )
-
         repository.add(task)
         return task
     }

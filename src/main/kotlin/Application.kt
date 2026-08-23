@@ -13,14 +13,15 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.example.application.TaskService
 import org.example.infrastructure.FileTaskRepository
-import org.example.server.taskRoutes
-import org.example.server.dto.ErrorResponse
+import org.example.web.taskRoutes
+import org.example.web.dto.ErrorResponse
 import org.example.domain.exceptions.TaskNotFoundException
 import org.example.domain.exceptions.InvalidEnumException
 import java.net.ServerSocket
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.uri
 import kotlinx.serialization.SerializationException
+import org.example.infrastructure.PostgresTaskRepository
 
 
 fun main() {
@@ -28,13 +29,45 @@ fun main() {
     System.setOut(java.io.PrintStream(System.out, true, "UTF-8"))
     System.setErr(java.io.PrintStream(System.err, true, "UTF-8"))
 
+    try {
+        Class.forName("org.postgresql.Driver")
+        println(" PostgreSQL Driver загружен успешно!")
+    } catch (e: ClassNotFoundException) {
+        println(" PostgreSQL Driver НЕ НАЙДЕН!")
+        println(" Проверьте зависимость в build.gradle.kts:")
+        println("   implementation(\"org.postgresql:postgresql:42.7.5\")")
+        e.printStackTrace()
+        return
+    }
+
     val dbUrl = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/taskmanager"
     val dbUser = System.getenv("DB_USER") ?: "taskuser"
     val dbPassword = System.getenv("DB_PASSWORD") ?: "taskpass"
     println("Подключение к PostgreSQL: $dbUrl")
 
-    val repository = FileTaskRepository(java.io.File("tasks.json"))
+    //  ПРОВЕРКА ПОДКЛЮЧЕНИЯ К БД
+    try {
+        val connection = java.sql.DriverManager.getConnection(dbUrl, dbUser, dbPassword)
+        println(" Подключение к PostgreSQL успешно!")
+        connection.close()
+    } catch (e: Exception) {
+        println(" Ошибка подключения к PostgreSQL: ${e.message}")
+        e.printStackTrace()
+        return
+    }
+
+    val repository = PostgresTaskRepository(dbUrl, dbUser, dbPassword)
     val taskService = TaskService(repository)
+
+    // ПРОВЕРКА ЧТЕНИЯ ДАННЫХ
+    try {
+        val tasks = repository.getAll()
+        println(" Загружено задач из БД: ${tasks.size}")
+        tasks.forEach { println("  - ${it.id}: ${it.title} (${it.status})") }
+    } catch (e: Exception) {
+        println(" Ошибка чтения данных: ${e.message}")
+        e.printStackTrace()
+    }
 
     val port = findAvailablePort(8081)
     println("Сервер находится на порте: $port")

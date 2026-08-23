@@ -303,8 +303,28 @@ class PostgresTaskRepository(
 
     private fun buildOrderClause(sortBy: String?): String {
         return when (sortBy?.lowercase()) {
-            "priority" -> "ORDER BY priority ASC, id ASC"
-            "priority_desc" -> "ORDER BY priority DESC, id ASC"
+            "priority" -> """
+            ORDER BY 
+                CASE priority 
+                    WHEN 'HIGH' THEN 1 
+                    WHEN 'MEDIUM' THEN 2 
+                    WHEN 'LOW' THEN 3 
+                    ELSE 4 
+                END, 
+                id ASC
+        """.trimIndent()
+
+            "priority_desc" -> """
+            ORDER BY 
+                CASE priority 
+                    WHEN 'LOW' THEN 1 
+                    WHEN 'MEDIUM' THEN 2 
+                    WHEN 'HIGH' THEN 3 
+                    ELSE 4 
+                END, 
+                id ASC
+        """.trimIndent()
+
             "created_at" -> "ORDER BY created_at ASC, id ASC"
             "created_at_desc" -> "ORDER BY created_at DESC, id ASC"
             "title" -> "ORDER BY title ASC, id ASC"

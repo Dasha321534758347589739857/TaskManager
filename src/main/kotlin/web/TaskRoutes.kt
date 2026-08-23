@@ -1,4 +1,4 @@
-package org.example.server
+package org.example.web
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -8,22 +8,60 @@ import io.ktor.server.request.receive
 import org.example.application.CreateTaskCommand
 import org.example.application.TaskService
 import org.example.domain.exceptions.TaskNotFoundException
-import org.example.server.TaskResponse
-import org.example.server.ErrorResponse
 import kotlinx.serialization.SerializationException
+import org.example.domain.Priority
 import org.example.domain.Task
+import org.example.domain.Status
+import org.example.domain.exceptions.InvalidEnumException
+import org.example.web.dto.PageResponse
 
 
 fun Route.taskRoutes(taskService: TaskService) {
 
-    // получить все задачи
+
     get("/api/tasks") {
-        val tasks = taskService.getAll()
-        val response = tasks.map { TaskResponse.fromDomain(it) }
+        val statusParam = call.request.queryParameters["status"]
+        val sortParam = call.request.queryParameters["sort"]
+        val limitParam = call.request.queryParameters["limit"]?.toIntOrNull()
+        val offsetParam = call.request.queryParameters["offset"]?.toIntOrNull()
+
+        val status = statusParam?.let {
+            try {
+                Status.valueOf(it.uppercase())
+            } catch (e: IllegalArgumentException) {
+                throw InvalidEnumException("status", it)
+            }
+        }
+
+        val limit = limitParam ?: 20
+        if (limit < 1) {
+            throw IllegalArgumentException("Предел должен быть больше 0")
+        }
+        if (limit > 100) {
+            throw IllegalArgumentException("Предел не может быть больше 100")
+        }
+
+        val offset = offsetParam ?: 0
+        if (offset < 0) {
+            throw IllegalArgumentException("Смещение должно быть больше или равно 0")
+        }
+
+            //TODO изучить подробнее
+        val tasks = taskService.getTasks(status, sortParam, limit, offset)
+        val total = taskService.getTotalCount(status)
+
+
+        val response = PageResponse(
+            items = tasks.map { TaskResponse.fromDomain(it) },
+            limit = limit,
+            offset = offset,
+            total = total
+        )
+
         call.respond(HttpStatusCode.OK, response)
     }
 
-    // GET /api/tasks/{id} - получить задачу по ID
+
     get("/api/tasks/{id}") {
         val id = call.parameters["id"]?.toIntOrNull()
             ?: throw NumberFormatException("Неверный формат ID")
@@ -37,9 +75,8 @@ fun Route.taskRoutes(taskService: TaskService) {
     post("/api/tasks") {
         val request = try {
             call.receive<CreateTaskRequest>()
-
         } catch (e: SerializationException) {
-            throw IllegalArgumentException("Неверный формат: ${e.message}")
+            throw IllegalArgumentException("Неверный формат JSON: ${e.message}")
         }
 
         if (request.title.isBlank()) {
@@ -47,7 +84,20 @@ fun Route.taskRoutes(taskService: TaskService) {
         }
 
 
-        val task = taskService.create(CreateTaskCommand(request.title))
+        val priority = when (request.priority?.uppercase()) {
+            "HIGH" -> Priority.HIGH
+            "MEDIUM" -> Priority.MEDIUM
+            "LOW" -> Priority.LOW
+            null -> Priority.MEDIUM  // По умолчанию
+            else -> throw IllegalArgumentException("Некорректный приоритет: ${request.priority}. Допустимые значения: HIGH, MEDIUM, LOW")
+        }
+
+        val task = taskService.create(CreateTaskCommand(
+            title = request.title,
+            description = request.description ?: "",
+            priority = priority
+        ) )
+
         call.respond(HttpStatusCode.Created, TaskResponse.fromDomain(task))
     }
 
@@ -66,17 +116,18 @@ fun Route.taskRoutes(taskService: TaskService) {
             ?: throw TaskNotFoundException(id)
 
 
-        if (request.title == null ) {
-            throw IllegalArgumentException("Поля должны быть изменены")
+        if (request.title == null && request.description == null &&
+            request.priority == null && request.status == null) {
+            throw IllegalArgumentException("Для обновления должно быть указано хотя бы одно поле")
         }
 
         // Обновляем задачу
-        val updatedTask = existingTask.copy(
-            id = request.id ?: existingTask.id,
-            _title = request.title ?: existingTask.title,
-            _description = request.description ?: existingTask.description,
-            _priority = request.priority ?: existingTask.priority,
-            _status = request.status ?: existingTask.status
+        val updatedTask = taskService.update(
+            id = id ?: existingTask.id,
+            newTitle = request.title ?: existingTask.title,
+            newDescription = request.description ?: existingTask.description,
+            newPriority = request.priority ?: existingTask.priority,
+
 
         )
 
@@ -119,6 +170,4 @@ fun Route.taskRoutes(taskService: TaskService) {
             )
         )
     }
-
-
 }

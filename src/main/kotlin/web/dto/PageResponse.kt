@@ -1,4 +1,4 @@
-package org.example.server.dto
+package org.example.web.dto
 
 import kotlinx.serialization.Serializable
 

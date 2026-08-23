@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "2.1.10"
     kotlin("plugin.serialization") version "2.1.10"
-    // application - УБИРАЕМ ЕГО СОВСЕМ, так как он не нужен
+
 }
 
 group = "org.example"
@@ -69,11 +69,11 @@ tasks.register<JavaExec>("runServer") {
     systemProperty("file.encoding", "UTF-8")
 }
 
-// Задача для запуска CLI
+
 tasks.register<JavaExec>("runCli") {
     group = "application"
     description = "Run CLI application"
-    mainClass.set("org.example.MainKt")  // или CliMainKt - как у вас называется
+    mainClass.set("org.example.CLIMain.kt")
     classpath = sourceSets.main.get().runtimeClasspath
     standardInput = System.`in`
 }

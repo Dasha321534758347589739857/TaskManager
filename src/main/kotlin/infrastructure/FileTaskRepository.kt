@@ -125,9 +125,18 @@ class FileTaskRepository(private val file: File) : TaskRepository {
 
 
         result = when (sortBy?.lowercase()) {
-            "priority" -> result.sortedBy { it.priority }
-            "priority_desc" -> result.sortedByDescending { it.priority }
-            "created_at" -> result.sortedBy { it.createdAt }
+            "priority" -> result.sortedBy {
+                when (it.priority) {
+                Priority.HIGH -> 1
+                Priority.MEDIUM -> 2
+                Priority.LOW -> 3
+            }}
+            "priority_desc" -> result.sortedByDescending { when (it.priority) {
+                Priority.HIGH -> 1
+                Priority.MEDIUM -> 2
+                Priority.LOW -> 3
+            } }
+            "created_at" -> result.sortedBy{it.createdAt}
             "created_at_desc" -> result.sortedByDescending { it.createdAt }
             "title" -> result.sortedBy { it.title }
             "title_desc" -> result.sortedByDescending { it.title }

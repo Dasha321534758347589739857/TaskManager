@@ -1,4 +1,4 @@
-package org.example.server
+package org.example.web
 
 import kotlinx.serialization.Serializable
 import org.example.domain.Priority
@@ -50,7 +50,6 @@ data class UpdateTaskRequest(
     val priority: Priority,
     val status: Status,
     val completed: Boolean = false
-
 )
 
 @Serializable

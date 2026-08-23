@@ -13,7 +13,6 @@ import org.example.domain.Priority
  * @see org.example.Domain.Task
  * @see TaskService
  */
-
 public data class CreateTaskCommand(
     val title: String,
     val description: String = "",
